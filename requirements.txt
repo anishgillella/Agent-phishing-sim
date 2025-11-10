@@ -1,0 +1,15 @@
+# Part 2: AI Agent - Dependencies
+
+# LangChain v1 (pre-release) for agent framework
+langchain>=1.0.0
+langchain-openai>=1.0.0  # For OpenRouter compatibility
+langsmith>=0.1.0  # For telemetry
+
+# Logfire for Pydantic model validation and evaluation
+logfire>=0.20.0
+
+# Pydantic for structured output
+pydantic>=2.0.0
+
+# Standard library
+python-dotenv>=1.0.0  # For environment variables
