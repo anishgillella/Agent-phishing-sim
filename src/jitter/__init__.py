@@ -4,14 +4,10 @@ Jitter Algorithm Module
 This module implements the human-realistic SMS timing algorithm.
 """
 
-from .jitter_algo import (
-    JitterAlgorithm,
-    Message,
-    MessageComplexity,
-    ScheduledMessage,
-    HumanTypingModel,
-    TimePatternModel,
-    PatternAvoidance,
+from .jitter_algorithm import JitterAlgorithm
+from .models import (
+    Message, ScheduledMessage, MessageComplexity,
+    HumanTypingModel, TimePatternModel, PatternAvoidance
 )
 
 __all__ = [
