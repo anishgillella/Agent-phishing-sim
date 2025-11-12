@@ -29,8 +29,14 @@ logger = get_logger("Simulation")
 monitor = SimulationMonitor()
 
 
-def run_simulation():
-    """Run a complete SMS phishing simulation."""
+def run_simulation(single_recipient_mode: bool = False):
+    """
+    Run a complete SMS phishing simulation.
+    
+    Args:
+        single_recipient_mode: If True, all 50 messages go to same recipient (matches Part 3 Q2 scenario).
+                              If False, messages are distributed across multiple recipients (campaign mode).
+    """
     
     monitor.print_header("🚀 SMS PHISHING SIMULATION - FULL PIPELINE")
     
@@ -104,71 +110,177 @@ def run_simulation():
     # ========== MESSAGE SCHEDULING ==========
     monitor.print_section("3️⃣  MESSAGE SCHEDULING (JITTER ALGORITHM)")
     
-    print("\n📝 Creating message queue...")
-    messages_to_schedule = [
-        {
-            "content": "Hi, we need to verify your account. Click here: bit.ly/verify",
-            "recipient": "+1234567890",
-            "is_correction": False,
-        },
-        {
-            "content": "This is urgent - please verify within 24 hours",
-            "recipient": "+1234567890",
-            "is_correction": False,
-        },
-        {
-            "content": "Last reminder: Account will be locked if not verified",
-            "recipient": "+1234567890",
-            "is_correction": False,
-        },
-        {
-            "content": "Quick security check needed for your account",
-            "recipient": "+0987654321",
-            "is_correction": False,
-        },
-        {
-            "content": "Suspicious activity detected - verify now",
-            "recipient": "+0987654321",
-            "is_correction": False,
-        },
-        {
-            "content": "Account verification link: bit.ly/verify",
-            "recipient": "+1111111111",
-            "is_correction": False,
-        },
+    # ========== SCENARIO 1: USUAL SCENARIO (NO TIME WINDOW) ==========
+    print("\n" + "="*80)
+    print("📋 SCENARIO 1: Usual Scenario (Standard Jitter Algorithm)")
+    print("="*80)
+    
+    # Create a small batch of messages for usual scenario
+    usual_messages = [
+        {"content": "Hi, we need to verify your account. Click here: bit.ly/verify", "recipient": "+1234567890"},
+        {"content": "This is urgent - please verify within 24 hours", "recipient": "+0987654321"},
+        {"content": "Last reminder: Account will be locked if not verified", "recipient": "+1111111111"},
+        {"content": "Quick security check needed for your account", "recipient": "+1234567890"},
+        {"content": "Suspicious activity detected - verify now", "recipient": "+0987654321"},
     ]
+    
+    print(f"\n📝 Scheduling {len(usual_messages)} messages (usual scenario)...")
+    print("   Flags: None (default behavior)")
+    
+    try:
+        usual_scheduled = agent.schedule_messages(usual_messages)
+        print(f"✅ Scheduled {len(usual_scheduled)} messages")
+        print("\n📅 Usual Scenario Scheduling Details:")
+        print(f"{'#':<3} {'Scheduled Time':<20} {'Recipient':<15} {'Typing (s)':<12}")
+        print("-"*60)
+        for i, scheduled in enumerate(usual_scheduled[:5], 1):
+            print(f"{i:<3} {scheduled.scheduled_time.strftime('%H:%M:%S'):<20} {scheduled.message.recipient:<15} {scheduled.typing_duration:<12.2f}")
+        monitor.stats["messages_scheduled"] = len(usual_scheduled)
+    except Exception as e:
+        print(f"❌ Failed to schedule usual scenario: {e}")
+        logger.error(f"Usual scenario scheduling failed: {e}")
+    
+    # ========== SCENARIO 2: 50 MESSAGES OVER 6-HOUR WORKDAY ==========
+    # Based on Part 3 of problem.md: "You need to send 50 messages over a 6-hour workday"
+    # Question 2 mentions "An employee replies to message #12" affecting remaining 38 messages
+    # This suggests messages are part of a campaign sequence, potentially to same or different recipients
+    print("\n" + "="*80)
+    print("📋 SCENARIO 2: 50 Messages Over 6-Hour Workday")
+    print("="*80)
+    print("\n   Based on Part 3 of problem.md")
+    print("   Using time window enforcement flag: enforce_time_window=True")
+    
+    # Set up 6-hour workday window (9 AM - 3 PM)
+    start_time = datetime.now().replace(hour=9, minute=0, second=0, microsecond=0)
+    end_time = start_time + timedelta(hours=6)  # 6-hour window
+    
+    print(f"\n⏰ Time Window:")
+    print(f"   Start: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"   End:   {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"   Duration: 6 hours")
+    
+    # Create 50 messages
+    # Note: Problem doesn't specify if all go to same recipient or different ones
+    # Question 2 suggests they're part of a sequence where a reply affects remaining messages
+    # Flag controls: single_recipient_mode=True = all to same (matches Q2), False = distributed campaign
+    print("\n📝 Creating 50 messages for 6-hour workday...")
+    messages_to_schedule = []
+    message_templates = [
+        "Hi, we need to verify your account. Click here: bit.ly/verify",
+        "This is urgent - please verify within 24 hours",
+        "Last reminder: Account will be locked if not verified",
+        "Quick security check needed for your account",
+        "Suspicious activity detected - verify now",
+        "Account verification link: bit.ly/verify",
+        "Your account requires immediate attention",
+        "Security alert: Please verify your identity",
+        "Action required: Verify your account now",
+        "Important: Account verification pending",
+    ]
+    
+    # Choose recipient distribution based on flag
+    if single_recipient_mode:
+        # All 50 messages to same recipient (matches Part 3 Question 2 scenario)
+        target_recipient = recipients[0]
+        print(f"   Mode: Single recipient (all 50 messages to {target_recipient})")
+    else:
+        # Distribute across multiple recipients (campaign simulation)
+        print(f"   Mode: Distributed campaign (across {len(recipients)} recipients)")
+    
+    for i in range(50):
+        if single_recipient_mode:
+            recipient = target_recipient
+        else:
+            # Cycle through recipients to distribute messages across campaign
+            recipient = recipients[i % len(recipients)]
+        
+        messages_to_schedule.append({
+            "content": f"{message_templates[i % len(message_templates)]} (#{i+1})",
+            "recipient": recipient,
+            "is_correction": False,
+        })
     
     monitor.stats["messages_created"] = len(messages_to_schedule)
     
     print(f"✅ Created {len(messages_to_schedule)} messages")
-    for i, msg in enumerate(messages_to_schedule, 1):
-        print(f"   {i}. [{msg['recipient']}] {msg['content'][:50]}...")
+    if single_recipient_mode:
+        print(f"   Recipient: {target_recipient} (all messages)")
+    else:
+        print(f"   Recipients: {len(recipients)} (distributed across)")
+    print(f"   Sample messages:")
+    for i in [0, 1, 2, 48, 49]:
+        print(f"      {i+1}. {messages_to_schedule[i]['content'][:60]}...")
     
     monitor.record_event("messages_created", {
         "count": len(messages_to_schedule),
         "recipients_unique": len(set(m["recipient"] for m in messages_to_schedule)),
+        "scenario": "50_messages_6hour_workday",
     })
     
-    # Use agent to schedule messages
-    print("\n🤖 Using Agent + Jitter Algorithm to schedule messages...")
+    # Use agent to schedule messages WITH TIME WINDOW ENFORCEMENT
+    print("\n🤖 Using Agent + Jitter Algorithm with TIME WINDOW ENFORCEMENT...")
+    print("   Flags:")
+    print("   - enforce_time_window=True")
+    print("   - max_messages_per_hour=10 (density control)")
+    print("   - distribution_mode='clustered' (human-realistic clustering)")
     try:
-        scheduled_messages = agent.schedule_messages(messages_to_schedule)
+        scheduled_messages = agent.schedule_messages(
+            messages_to_schedule,
+            start_time=start_time,
+            end_time=end_time,
+            enforce_time_window=True,  # ✅ FLAG: Enforce 6-hour window
+            max_messages_per_hour=10,   # ✅ FLAG: Density control (max 10/hour)
+            distribution_mode="clustered"  # ✅ FLAG: Clustered distribution
+        )
         monitor.stats["messages_scheduled"] = len(scheduled_messages)
         
         print(f"✅ Scheduled {len(scheduled_messages)} messages with human-realistic timing")
-        print("\n📅 Scheduling Details:")
-        print(f"{'#':<3} {'Recipient':<15} {'Scheduled Time':<20} {'Typing (s)':<12} {'Explanation':<40}")
+        
+        # Verify time window constraint
+        first_time = scheduled_messages[0].scheduled_time
+        last_time = scheduled_messages[-1].scheduled_time
+        actual_duration = (last_time - first_time).total_seconds() / 3600.0
+        
+        print(f"\n⏱️  Time Window Verification:")
+        print(f"   First message: {first_time.strftime('%H:%M:%S')}")
+        print(f"   Last message:  {last_time.strftime('%H:%M:%S')}")
+        print(f"   Actual duration: {actual_duration:.2f} hours")
+        print(f"   ✅ All messages fit within 6-hour window: {last_time <= end_time}")
+        
+        # Show distribution by hour
+        print(f"\n📊 Message Distribution by Hour:")
+        messages_by_hour = {}
+        for scheduled in scheduled_messages:
+            hour = scheduled.scheduled_time.hour
+            messages_by_hour[hour] = messages_by_hour.get(hour, 0) + 1
+        
+        for hour in sorted(messages_by_hour.keys()):
+            count = messages_by_hour[hour]
+            bar = "█" * count
+            print(f"   {hour:02d}:00 - {hour+1:02d}:00: {count:2d} messages {bar}")
+        
+        print("\n📅 Sample Scheduling Details (first 5, middle 2, last 5):")
+        print(f"{'#':<3} {'Scheduled Time':<20} {'Delay (min)':<12} {'Typing (s)':<12} {'Explanation':<40}")
         print("-"*95)
         
-        for i, scheduled in enumerate(scheduled_messages, 1):
-            explanation = scheduled.explanation[:37] + "..." if len(scheduled.explanation) > 40 else scheduled.explanation
-            print(f"{i:<3} {scheduled.message.recipient:<15} {scheduled.scheduled_time.strftime('%H:%M:%S'):<20} {scheduled.typing_duration:<12.2f} {explanation:<40}")
-            
-            monitor.record_event("message_scheduled", {
-                "recipient": scheduled.message.recipient,
-                "scheduled_time": scheduled.scheduled_time.isoformat(),
-                "typing_duration": scheduled.typing_duration,
-            })
+        sample_indices = list(range(5)) + list(range(24, 26)) + list(range(45, 50))
+        previous_time = None
+        for i in sample_indices:
+            if i < len(scheduled_messages):
+                scheduled = scheduled_messages[i]
+                if previous_time:
+                    delay_min = (scheduled.scheduled_time - previous_time).total_seconds() / 60.0
+                else:
+                    delay_min = 0.0
+                explanation = scheduled.explanation[:37] + "..." if len(scheduled.explanation) > 40 else scheduled.explanation
+                print(f"{i+1:<3} {scheduled.scheduled_time.strftime('%H:%M:%S'):<20} {delay_min:<12.1f} {scheduled.typing_duration:<12.2f} {explanation:<40}")
+                previous_time = scheduled.scheduled_time
+                
+                monitor.record_event("message_scheduled", {
+                    "recipient": scheduled.message.recipient,
+                    "scheduled_time": scheduled.scheduled_time.isoformat(),
+                    "typing_duration": scheduled.typing_duration,
+                })
         
     except Exception as e:
         print(f"❌ Failed to schedule messages: {e}")
@@ -360,8 +472,22 @@ def run_simulation():
 
 
 if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(
+        description="SMS Phishing Simulation - Human-realistic timing patterns"
+    )
+    parser.add_argument(
+        "--single-recipient",
+        action="store_true",
+        help="Send all 50 messages to the same recipient (matches Part 3 Question 2 scenario). "
+             "Default: False (distribute across multiple recipients)"
+    )
+    
+    args = parser.parse_args()
+    
     try:
-        run_simulation()
+        run_simulation(single_recipient_mode=args.single_recipient)
     except KeyboardInterrupt:
         print("\n\n⚠️  Simulation interrupted by user")
         sys.exit(0)
