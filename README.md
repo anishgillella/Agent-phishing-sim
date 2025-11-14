@@ -2,6 +2,10 @@
 
 A complete system for scheduling SMS messages with human-realistic timing patterns, orchestrated by an event-driven AI agent.
 
+## Visual Architecture
+
+View the complete system architecture on Miro: [Agent Phishing Sim Architecture Board](https://miro.com/welcomeonboard/d1VyQ044Rk9CalhSMVp1T3UzQ1FtSXdSbDFrbHBvT3B5K0w4bjJBN1NhaHp2cGFqaGE5UlVBdG56bUZUL3dWRkNlL1JlYzR2SG1FK0pFS1ZncHFPcXpXVGRZVGNVb21JZmpxRjVJL1p6eEp1NzBCeU9na0tpV1gxbW5HOE9NSnVNakdSWkpBejJWRjJhRnhhb1UwcS9BPT0hdjE=?share_link_id=719142887599)
+
 ## Overview
 
 This implementation fully complies with the GhostEye SMS Phishing Simulator assessment requirements:
