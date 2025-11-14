@@ -61,9 +61,9 @@
 **Answer: 2-Call Jitter Pattern**
 
 **Flow:**
-1. Pause remaining 38 messages
+1. Pause remaining messages (from initial 50 or whatever was generated)
 2. CALL 1: `schedule_message()` - Send immediate reply (30-120 sec)
-3. CALL 2: `schedule_message_queue()` - Reschedule 38 with extended delays
+3. CALL 2: `schedule_message_queue()` - Reschedule remaining with extended delays
 4. Loop support: If another reply comes, repeat process
 
 **Why:** Clean abstraction, reusable, supports multiple replies
@@ -147,7 +147,7 @@ Layer 4: Jitter Algorithm
 
 Layer 5: Messaging
 ├─ MockSMSSender (simulated)
-└─ Why: Twilio blocked; mock sufficient for simulation
+└─ Why: Production SMS requires external SMS provider; mock sufficient for simulation
 ```
 
 **Service Integration:**
@@ -185,9 +185,9 @@ LangChain Agent
    - Why: Specialized tools, reduces maintenance
    - Trade-off: Less control, more reliability
 
-3. **Message Sending (Twilio)**
-   - Why: Production SMS requires carrier relationships
-   - Reality: Can't replicate at small scale
+3. **Message Sending (SMS Provider)**
+   - Why: Requires carrier relationships and regulatory compliance
+   - Implementation: MockSMSSender for simulation environment
 
 **Decision Framework:**
 ```
