@@ -6,6 +6,7 @@ from .logger import get_logger, SimulationMonitor, log_with_context
 from .mock_sms import MockSMSSender, SMSRecord
 from .token_tracker import TokenTracker, TokenUsage, CostBreakdown
 from .callbacks import TokenTrackingCallback
+from .employee_simulator import EmployeeSimulator
 
 __all__ = [
     "get_logger",
@@ -17,5 +18,6 @@ __all__ = [
     "TokenUsage",
     "CostBreakdown",
     "TokenTrackingCallback",
+    "EmployeeSimulator",
 ]
 

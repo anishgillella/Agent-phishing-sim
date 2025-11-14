@@ -1,0 +1,1944 @@
+Logfire project URL: https://logfire-us.pydantic.dev/anishgillella/ghosteye
+
+================================================================================
+  GHOSTEYE SMS PHISHING SIMULATOR
+================================================================================
+
+📋 Selected scenarios: few, multiple, reply, timing
+
+--------------------------------------------------------------------------------
+  INITIALIZATION
+--------------------------------------------------------------------------------
+✅ OpenRouter API key configured
+
+🤖 Initializing SMS Agent...
+✅ Agent initialized
+✅ Mock SMS sender initialized
+
+================================================================================
+  FEW MESSAGES SCENARIO (AGENT + JITTER)
+================================================================================
+10:34:28.259 agent_process_request
+10:34:43.225   agent_tool_calls
+
+✅ Scheduled: 3 messages
+
+========================================================================================================================
+MESSAGE DETAILS WITH JITTER FACTORS
+========================================================================================================================
+
+Message #1 → +1234567890
+  📩 Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+  ⏰ 10:35:11 | ⌨️ 17.5s
+  📊 Complexity: SIMPLE (14 words). Typing: Typing 14 words at ~48 WPM (17.5s base) (WPM range: 35-50, actual: ~48). Initial message scheduled with realistic startup delay.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 48.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+Message #2 → +1234567890
+  📩 URGENT: Complete account verification within 24 hours to prevent suspension.
+  ⏰ 10:56:25 | ⌨️ 41.5s
+  📊 Complexity: SIMPLE (10 words). Typing: Typing 10 words at ~38 WPM (15.8s base (includes 25.8s thinking pause at 52% of composition)) (WPM range: 35-50, actual: ~38). Inter-message delay: 18.90 min base → 21.22 min actual (adjusted for time clustering: 1.20x, clustered: False, pattern avoidance applied).
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 38.1 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 18.90m → Actual: 21.22m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+Message #3 → +0987654321
+  📩 Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+  ⏰ 11:04:38 | ⌨️ 35.2s
+  📊 Complexity: SIMPLE (14 words). Typing: Typing 14 words at ~39 WPM (21.3s base (includes 13.9s thinking pause at 31% of composition)) (WPM range: 35-50, actual: ~39). Inter-message delay: 14.57 min base → 8.23 min actual (adjusted for time clustering: 1.20x, clustered: True, pattern avoidance applied).
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 39.5 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 14.57m → Actual: 8.23m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+================================================================================
+  REALISTIC TIMING PATTERNS (8-12 MESSAGES, 2 RECIPIENTS)
+================================================================================
+10:34:43.226 agent_process_request
+10:35:26.773   agent_tool_calls
+
+✅ Total: 11 messages
+   +1234567890: 6 messages
+   +0987654321: 5 messages
+
+========================================================================================================================
+CAMPAIGN TIMELINE WITH JITTER FACTORS
+========================================================================================================================
+
+[ 1] 10:35 → +1234567890 | Gap: NEW | Type: 17s
+     Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 48.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 2] 10:36 → +1234567890 | Gap: 1.2m | Type: 36s
+     Security alert: Unusual login activity detected on your account from Shanghai at 2025-11-14 10:34 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 33.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 3] 10:52 → +1234567890 | Gap: 16.2m | Type: 14s
+     Time-sensitive: Verify your identity immediately to maintain account access.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 9 | WPM: 39.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 17.74m → Actual: 16.15m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 4] 10:56 → +1234567890 | Gap: 3.9m | Type: 42s
+     URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 38.1 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 18.90m → Actual: 21.22m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 5] 11:04 → +0987654321 | Gap: NEW | Type: 35s
+     Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 39.5 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 14.57m → Actual: 8.23m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 6] 11:23 → +1234567890 | Gap: NEW | Type: 56s
+     We need immediate verification of your account identity. This is your second notice. Complete verification within 2 hours.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 40.0 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 20.98m → Actual: 30.67m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 7] 11:31 → +1234567890 | Gap: 8.3m | Type: 18s
+     Status update: Verification still pending. Risk of suspension continues. This is your last chance.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 46.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 13.37m → Actual: 8.25m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 8] 11:34 → +0987654321 | Gap: NEW | Type: 46s
+     Security alert: Unusual login activity detected on your account from Shanghai at 2025-11-14 14:34 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 42.5 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 6.59m → Actual: 3.51m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 9] 12:04 → +0987654321 | Gap: 29.0m | Type: 20s
+     Your account will be locked in 12 hours if not verified. Verify now: verify-account-now.com/?id=secure
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 42.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 26.67m → Actual: 29.01m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[10] 12:14 → +0987654321 | Gap: 10.9m | Type: 119s
+     Hello, this is an important security notification regarding your account. We've been conducting routine security checks and have identified some anomalies. Our system has flagged your account for potential security risks based on recent activity patterns, including login attempts from unfamiliar devices and locations. To protect your account and personal information, we require you to verify your identity through our secure verification portal.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: COMPLEX
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 63 | WPM: 31.8 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 27.82m → Actual: 10.93m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[11] 12:23 → +0987654321 | Gap: 8.5m | Type: 33s
+     Haven't verified yet? Your account remains at critical risk. We sent you a verification link.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 15 | WPM: 35.2 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 24.54m → Actual: 8.48m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+PATTERN ANALYSIS
+========================================================================================================================
+
+Burst Clusters: 6
+  Burst 1: 2 messages in 1.2m
+  Burst 2: 2 messages in 3.9m
+  Burst 3: 1 messages in 0.0m
+  Burst 4: 2 messages in 8.3m
+  Burst 5: 1 messages in 0.0m
+  Burst 6: 3 messages in 19.4m
+
+Typing Variation: 14s → 119s (Avg: 40s)
+Total Duration: 108.2 minutes
+
+✓ Human-realistic: Bursts + silence + varied typing + non-uniform gaps
+
+================================================================================
+  50 MESSAGES TO 12 RECIPIENTS (CLUSTERED DISTRIBUTION)
+================================================================================
+
+⏰ 09:00 - 15:00 | 👥 12 recipients
+10:35:26.774 agent_process_request
+10:36:32.737   agent_tool_calls
+
+✅ Scheduled: 61 messages
+📊 Distribution: 09:00 (10) | 10:00 (12) | 11:00 (13) | 12:00 (11) | 13:00 (9) | 14:00 (5) | 15:00 (1)
+
+========================================================================================================================
+MESSAGES BY RECIPIENT
+========================================================================================================================
+
+========================================================================================================================
+👤 RECIPIENT: +0987654321 (5 messages)
+========================================================================================================================
+
+[1] 11:04 | Gap: NEW | Type: 35s
+    Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 39.5 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 14.57m → Actual: 8.23m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 11:34 | Gap: 30.3m | Type: 46s
+    Security alert: Unusual login activity detected on your account from Shanghai at 2025-11-14 14:34 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 42.5 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 6.59m → Actual: 3.51m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 12:04 | Gap: 29.0m | Type: 20s
+    Your account will be locked in 12 hours if not verified. Verify now: verify-account-now.com/?id=secure
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 42.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 26.67m → Actual: 29.01m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 12:14 | Gap: 10.9m | Type: 119s
+    Hello, this is an important security notification regarding your account. We've been conducting routine security checks and have identified some anomalies. Our system has flagged your account for potential security risks based on recent activity patterns, including login attempts from unfamiliar devices and locations. To protect your account and personal information, we require you to verify your identity through our secure verification portal.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: COMPLEX
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 63 | WPM: 31.8 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 27.82m → Actual: 10.93m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[5] 12:23 | Gap: 8.5m | Type: 33s
+    Haven't verified yet? Your account remains at critical risk. We sent you a verification link.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 15 | WPM: 35.2 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 24.54m → Actual: 8.48m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +1010101010 (4 messages)
+========================================================================================================================
+
+[1] 13:28 | Gap: NEW | Type: 29s
+    Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 48.9 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 16.60m → Actual: 8.84m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 13:32 | Gap: 4.1m | Type: 18s
+    Your account will be locked in 12 hours if not verified. Verify now: verify-account-now.com/?id=secure
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 47.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 11.23m → Actual: 4.08m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 13:36 | Gap: 4.2m | Type: 20s
+    Account verification required to restore full access. Please verify your identity at: verify-account-now.com/secure-portal
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 38.3 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 19.77m → Actual: 4.20m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 13:43 | Gap: 6.9m | Type: 21s
+    Account still unverified. We sent you a verification link. Check spam folder if needed.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 40.9 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 23.85m → Actual: 6.92m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +1111111111 (5 messages)
+========================================================================================================================
+
+[1] 09:00 | Gap: NEW | Type: 18s
+    Your account flagged for verification. Unauthorized login attempt detected from Moscow. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 46.6 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 09:05 | Gap: 4.3m | Type: 39s
+    URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 35.8 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 7.81m → Actual: 4.31m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 09:12 | Gap: 7.9m | Type: 29s
+    We need immediate verification of your account identity. This is your second notice. Complete verification within 2 hours.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 37.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 5.49m → Actual: 7.88m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 09:16 | Gap: 3.2m | Type: 18s
+    Account still unverified. We sent you a verification link. Check spam folder if needed.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 47.6 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 23.32m → Actual: 3.17m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[5] 09:23 | Gap: 7.8m | Type: 17s
+    Reminder: Your account verification is still incomplete. This is your final reminder.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 12 | WPM: 42.0 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 21.30m → Actual: 7.76m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +1111121111 (4 messages)
+========================================================================================================================
+
+[1] 13:53 | Gap: NEW | Type: 17s
+    Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 48.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 20.55m → Actual: 9.82m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 13:56 | Gap: 2.6m | Type: 51s
+    Your account will be locked in 12 hours if not verified. Verify now: verify-account-now.com/?id=secure
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 35.2 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 22.27m → Actual: 2.64m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 14:06 | Gap: 9.9m | Type: 104s
+    Hello, this is an important security notification regarding your account. We've been conducting routine security checks and have identified some anomalies. Our system has flagged your account for potential security risks based on recent activity patterns, including login attempts from unfamiliar devices and locations. To protect your account and personal information, we require you to verify your identity through our secure verification portal.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: COMPLEX
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 63 | WPM: 36.3 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 18.22m → Actual: 9.88m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 14:17 | Gap: 11.1m | Type: 17s
+    Account still unverified. We sent you a verification link. Check spam folder if needed.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 49.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 6.81m → Actual: 11.06m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +1212121212 (4 messages)
+========================================================================================================================
+
+[1] 14:22 | Gap: NEW | Type: 37s
+    Security alert: Unusual login activity detected on your account from Moscow at 2025-11-14 10:35 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 32.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 7.46m → Actual: 5.19m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 14:35 | Gap: 13.2m | Type: 36s
+    URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 44.2 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 8.20m → Actual: 13.16m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 14:36 | Gap: 1.3m | Type: 23s
+    Account verification required to restore full access. Please verify your identity at: verify-account-now.com/secure-portal
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 37.0 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 15.31m → Actual: 1.34m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 15:00 | Gap: 23.2m | Type: 19s
+    Status update: Verification still pending. Risk of suspension continues. This is your last chance.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 45.0 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 2.44m → Actual: 23.16m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +1234567890 (6 messages)
+========================================================================================================================
+
+[1] 10:35 | Gap: NEW | Type: 17s
+    Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 48.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 10:36 | Gap: 1.2m | Type: 36s
+    Security alert: Unusual login activity detected on your account from Shanghai at 2025-11-14 10:34 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 33.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 10:52 | Gap: 16.2m | Type: 14s
+    Time-sensitive: Verify your identity immediately to maintain account access.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 9 | WPM: 39.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 17.74m → Actual: 16.15m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 10:56 | Gap: 3.9m | Type: 42s
+    URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 38.1 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 18.90m → Actual: 21.22m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[5] 11:23 | Gap: 26.8m | Type: 56s
+    We need immediate verification of your account identity. This is your second notice. Complete verification within 2 hours.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 40.0 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 20.98m → Actual: 30.67m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[6] 11:31 | Gap: 8.3m | Type: 18s
+    Status update: Verification still pending. Risk of suspension continues. This is your last chance.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 46.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 13.37m → Actual: 8.25m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +2222222222 (5 messages)
+========================================================================================================================
+
+[1] 09:31 | Gap: NEW | Type: 17s
+    Alert: We detected suspicious activity on your account. Immediate verification required. Visit: verify-account-now.com
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 45.9 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 7.48m → Actual: 7.75m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 09:39 | Gap: 7.7m | Type: 15s
+    URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 41.0 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 6.47m → Actual: 7.71m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 09:46 | Gap: 7.0m | Type: 25s
+    We need immediate verification of your account identity. This is your second notice. Complete verification within 2 hours.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 43.6 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 8.47m → Actual: 7.02m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 09:54 | Gap: 7.8m | Type: 22s
+    Reminder: Your account verification is still incomplete. This is your final reminder.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 12 | WPM: 38.1 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 19.20m → Actual: 7.84m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[5] 09:58 | Gap: 4.3m | Type: 21s
+    Haven't verified yet? Your account remains at critical risk. We sent you a verification link.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 15 | WPM: 43.3 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 8.34m → Actual: 4.30m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +3333333333 (4 messages)
+========================================================================================================================
+
+[1] 10:02 | Gap: NEW | Type: 30s
+    Alert: We detected suspicious activity on your account. Immediate verification required. Visit: verify-account-now.com
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 43.8 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 27.19m → Actual: 3.84m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 10:10 | Gap: 7.9m | Type: 14s
+    Time-sensitive: Verify your identity immediately to maintain account access.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 9 | WPM: 40.0 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 8.46m → Actual: 7.86m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 10:20 | Gap: 10.2m | Type: 156s
+    Hello, this is an important security notification regarding your account. We've been conducting routine security checks and have identified some anomalies. Our system has flagged your account for potential security risks based on recent activity patterns, including login attempts from unfamiliar devices and locations. To protect your account and personal information, we require you to verify your identity through our secure verification portal.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: COMPLEX
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 63 | WPM: 27.0 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 20.82m → Actual: 10.23m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 10:28 | Gap: 8.0m | Type: 24s
+    Haven't verified yet? Your account remains at critical risk. We sent you a verification link.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 15 | WPM: 37.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 7.97m → Actual: 7.96m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +4444444444 (4 messages)
+========================================================================================================================
+
+[1] 10:34 | Gap: NEW | Type: 16s
+    Alert: We detected suspicious activity on your account. Immediate verification required. Visit: verify-account-now.com
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 48.6 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 4.35m → Actual: 5.78m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 10:41 | Gap: 7.8m | Type: 15s
+    URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 41.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 11.82m → Actual: 7.84m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 10:46 | Gap: 4.2m | Type: 120s
+    Hello, this is an important security notification regarding your account. We've been conducting routine security checks and have identified some anomalies. Our system has flagged your account for potential security risks based on recent activity patterns, including login attempts from unfamiliar devices and locations. To protect your account and personal information, we require you to verify your identity through our secure verification portal.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: COMPLEX
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 63 | WPM: 31.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 24.75m → Actual: 4.21m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 10:54 | Gap: 8.4m | Type: 42s
+    Status update: Verification still pending. Risk of suspension continues. This is your last chance.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 41.7 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 10.28m → Actual: 8.40m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +5555555555 (4 messages)
+========================================================================================================================
+
+[1] 11:02 | Gap: NEW | Type: 20s
+    Alert: We detected suspicious activity on your account. Immediate verification required. Visit: verify-account-now.com
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 38.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 3.96m → Actual: 8.01m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 11:10 | Gap: 7.9m | Type: 13s
+    URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 47.2 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 9.41m → Actual: 7.87m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 11:13 | Gap: 3.2m | Type: 19s
+    Account verification required to restore full access. Please verify your identity at: verify-account-now.com/secure-portal
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 40.6 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 19.38m → Actual: 3.23m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 11:21 | Gap: 8.2m | Type: 22s
+    Haven't verified yet? Your account remains at critical risk. We sent you a verification link.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 15 | WPM: 41.2 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 16.44m → Actual: 8.17m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +6666666666 (4 messages)
+========================================================================================================================
+
+[1] 11:30 | Gap: NEW | Type: 39s
+    Security alert: Unusual login activity detected on your account from Bangalore at 2025-11-14 10:35 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 30.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 11.00m → Actual: 8.45m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 11:32 | Gap: 2.6m | Type: 12s
+    Time-sensitive: Verify your identity immediately to maintain account access.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 9 | WPM: 45.7 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 15.09m → Actual: 2.55m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 11:41 | Gap: 8.7m | Type: 44s
+    We need immediate verification of your account identity. This is your second notice. Complete verification within 2 hours.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 40.6 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 7.16m → Actual: 8.69m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 11:49 | Gap: 8.2m | Type: 18s
+    Reminder: Your account verification is still incomplete. This is your final reminder.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 12 | WPM: 38.9 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 26.32m → Actual: 8.25m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +7777777777 (4 messages)
+========================================================================================================================
+
+[1] 11:58 | Gap: NEW | Type: 28s
+    Security alert: Unusual login activity detected on your account from Lagos at 2025-11-14 15:35 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 42.6 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 8.68m → Actual: 8.39m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 12:06 | Gap: 8.3m | Type: 22s
+    Your account will be locked in 12 hours if not verified. Verify now: verify-account-now.com/?id=secure
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 38.7 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 16.07m → Actual: 8.27m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 12:15 | Gap: 8.6m | Type: 41s
+    Account verification required to restore full access. Please verify your identity at: verify-account-now.com/secure-portal
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 35.2 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 3.97m → Actual: 8.57m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 12:19 | Gap: 4.9m | Type: 52s
+    Haven't verified yet? Your account remains at critical risk. We sent you a verification link.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 15 | WPM: 35.9 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 26.09m → Actual: 4.88m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +8888888888 (4 messages)
+========================================================================================================================
+
+[1] 12:28 | Gap: NEW | Type: 36s
+    Alert: We detected suspicious activity on your account. Immediate verification required. Visit: verify-account-now.com
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 35.6 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 9.50m → Actual: 8.60m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 12:36 | Gap: 8.4m | Type: 23s
+    Your account will be locked in 12 hours if not verified. Verify now: verify-account-now.com/?id=secure
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 36.6 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 22.62m → Actual: 8.36m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 12:46 | Gap: 10.1m | Type: 127s
+    Hello, this is an important security notification regarding your account. We've been conducting routine security checks and have identified some anomalies. Our system has flagged your account for potential security risks based on recent activity patterns, including login attempts from unfamiliar devices and locations. To protect your account and personal information, we require you to verify your identity through our secure verification portal.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: COMPLEX
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 63 | WPM: 38.1 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 14.76m → Actual: 10.07m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 12:54 | Gap: 7.6m | Type: 26s
+    Haven't verified yet? Your account remains at critical risk. We sent you a verification link.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 15 | WPM: 45.8 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 19.36m → Actual: 7.56m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+👤 RECIPIENT: +9999999999 (4 messages)
+========================================================================================================================
+
+[1] 12:57 | Gap: NEW | Type: 29s
+    Security alert: Unusual login activity detected on your account from Moscow at 2025-11-14 14:35 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 41.0 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 17.38m → Actual: 3.22m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[2] 13:01 | Gap: 4.1m | Type: 22s
+    Final warning: You have 6 hours to verify. After that, permanent suspension will occur.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 38.3 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 8.16m → Actual: 4.07m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[3] 13:10 | Gap: 8.9m | Type: 26s
+    We need immediate verification of your account identity. This is your second notice. Complete verification within 2 hours.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 41.6 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 14.42m → Actual: 8.88m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[4] 13:19 | Gap: 9.0m | Type: 38s
+    Account still unverified. We sent you a verification link. Check spam folder if needed.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 44.6 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 3.93m → Actual: 9.04m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+================================================================================
+  REPLY HANDLING (50 MESSAGES, PAUSE & RESCHEDULE AT #12)
+================================================================================
+
+👤 Recipient: +1234567890
+10:36:32.739 agent_process_request
+10:37:25.797   agent_tool_calls
+
+✅ Scheduled: 56 messages
+
+========================================================================================================================
+FIRST 12 MESSAGES (BEFORE REPLY)
+========================================================================================================================
+
+[ 1] 10:35 | Gap: NEW
+     Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 48.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 2] 10:36 | Gap: 1.2m
+     Security alert: Unusual login activity detected on your account from Shanghai at 2025-11-14 10:34 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 33.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 3] 10:38 | Gap: 1.8m
+     Alert: We detected suspicious activity on your account. Immediate verification required. Visit: verify-account-now.com
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 46.5 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 4] 10:52 | Gap: 14.3m
+     Time-sensitive: Verify your identity immediately to maintain account access.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 9 | WPM: 39.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 17.74m → Actual: 16.15m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 5] 10:56 | Gap: 3.9m
+     URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 38.1 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 18.90m → Actual: 21.22m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 6] 11:04 | Gap: 8.5m
+     URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 46.8 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 13.46m → Actual: 26.62m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 7] 11:23 | Gap: 18.4m
+     We need immediate verification of your account identity. This is your second notice. Complete verification within 2 hours.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 40.0 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 20.98m → Actual: 30.67m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 8] 11:28 | Gap: 4.8m
+     URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 48.8 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 25.57m → Actual: 23.19m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[ 9] 11:31 | Gap: 3.4m
+     Status update: Verification still pending. Risk of suspension continues. This is your last chance.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 46.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 13.37m → Actual: 8.25m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[10] 11:39 | Gap: 8.0m
+     Hello, this is an important security notification regarding your account. We've been conducting routine security checks and have identified some anomalies. Our system has flagged your account for potential security risks based on recent activity patterns, including login attempts from unfamiliar devices and locations. To protect your account and personal information, we require you to verify your identity through our secure verification portal.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: COMPLEX
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 63 | WPM: 38.9 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 27.30m → Actual: 11.42m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[11] 11:48 | Gap: 8.9m
+     Last chance: Your account verification window closes in 1 hour. Do not delay. This is your final notice.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 47.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 26.55m → Actual: 8.94m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[12] 12:15 | Gap: 27.2m
+     Reminder: Your account verification is still incomplete. This is your final reminder.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 12 | WPM: 41.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 24.43m → Actual: 27.16m | Cluster: 0.80x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 0.8 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+========================================================================================================================
+EMPLOYEE REPLY RECEIVED AT MESSAGE #12
+========================================================================================================================
+
+State BEFORE: 12 sent, 44 remaining scheduled
+Reply: 'Yes, I'll verify now' at 10:37:25
+10:37:25.800 agent_process_request
+10:37:29.879   agent_tool_calls
+
+========================================================================================================================
+STATE AFTER REPLY HANDLING
+========================================================================================================================
+
+✅ Actions:
+   • Paused: 44 messages
+   • Immediate reply: 1 message scheduled
+   • Rescheduled: 44 messages with extended delays
+
+📊 Stats: 50 total | 12 sent | 44 paused & rescheduled
+
+========================================================================================================================
+RESCHEDULED MESSAGES (First 10 of 58)
+========================================================================================================================
+
+[13] 10:35 | Gap: NEW
+     Your account flagged for verification. Unauthorized login attempt detected from Bangalore. Action required immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 48.1 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[14] 10:56 | Gap: 21.2m
+     URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 38.1 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 18.90m → Actual: 21.22m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[15] 10:36 | Gap: -20.0m
+     Security alert: Unusual login activity detected on your account from Shanghai at 2025-11-14 10:34 UTC. Please verify your identity immediately.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: MEDIUM
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 20 | WPM: 33.5 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[16] 10:52 | Gap: 16.2m
+     Time-sensitive: Verify your identity immediately to maintain account access.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 9 | WPM: 39.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 17.74m → Actual: 16.15m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: YES
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[17] 11:23 | Gap: 30.7m
+     We need immediate verification of your account identity. This is your second notice. Complete verification within 2 hours.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 18 | WPM: 40.0 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 20.98m → Actual: 30.67m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[18] 11:31 | Gap: 8.3m
+     Status update: Verification still pending. Risk of suspension continues. This is your last chance.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 14 | WPM: 46.4 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 13.37m → Actual: 8.25m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[19] 10:38 | Gap: -53.2m
+     Alert: We detected suspicious activity on your account. Immediate verification required. Visit: verify-account-now.com
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 13 | WPM: 46.5 | Pause: YES
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      First message - no previous delay
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: None | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[20] 11:04 | Gap: 26.6m
+     URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 46.8 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 13.46m → Actual: 26.62m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[21] 11:28 | Gap: 23.2m
+     URGENT: Complete account verification within 24 hours to prevent suspension.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: SIMPLE
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 10 | WPM: 48.8 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 25.57m → Actual: 23.19m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+[22] 11:39 | Gap: 11.4m
+     Hello, this is an important security notification regarding your account. We've been conducting routine security checks and have identified some anomalies. Our system has flagged your account for potential security risks based on recent activity patterns, including login attempts from unfamiliar devices and locations. To protect your account and personal information, we require you to verify your identity through our secure verification portal.
+
+   ✓ Factor 1: MESSAGE COMPLEXITY
+      Level: COMPLEX
+
+   ✓ Factor 2: TYPING TIME (with mid-message breaks)
+      Words: 63 | WPM: 38.9 | Pause: NO
+
+   ✓ Factor 3: INTER-MESSAGE DELAY
+      Base: 27.30m → Actual: 11.42m | Cluster: 1.20x
+
+   ✓ Factor 4: TIME CLUSTERING (peak hours)
+      Applied: 1.2 | Clustered: NO
+
+   ✓ Factor 5: PATTERN AVOIDANCE (exponential randomness)
+      Violation: False | Adjustments: 0
+
+... and 48 more
+
+================================================================================
+  SIMULATION COMPLETE
+================================================================================
+
+📊 Summary:
+   Few Messages: 3 messages scheduled
+   Realistic Timing: 11 messages with human-like patterns
+   Multiple Users (50 messages): 61 messages scheduled
+   Reply Handling: Handled reply and rescheduled remaining messages
+
+📈 Telemetry:
+   Messages queued: 269
+   Messages scheduled: 113
+   Pattern violations detected: 0
+   Agent decisions made: 1
+
+💰 Token Usage:
+   Total tokens: 97,089
+   Total cost: $0.017716 USD
+
+✅ All scenarios completed successfully!

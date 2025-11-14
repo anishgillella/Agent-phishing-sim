@@ -2,9 +2,11 @@
 Reply Handler
 
 Handles recipient replies and reschedules remaining messages.
+Uses jitter algorithm via clean 2-call pattern:
+  1. schedule_message() - for immediate reply
+  2. schedule_message_queue() - for rescheduled batch
 """
 
-import random
 import logging
 import uuid
 import sys
@@ -23,6 +25,12 @@ logger = logging.getLogger(__name__)
 class ReplyHandler:
     """
     Handles recipient replies and manages message rescheduling.
+    
+    Clean design:
+    - Pause remaining messages
+    - Call jitter.schedule_message() for immediate reply
+    - Call jitter.schedule_message_queue() for rescheduled batch
+    - Naturally supports loops for multiple replies
     """
     
     def __init__(self, 
@@ -59,12 +67,13 @@ class ReplyHandler:
     
     def handle_reply(self, reply_data: Dict[str, Any], memory: List[Dict[str, Any]]) -> None:
         """
-        Handle a reply from a recipient.
+        Handle a reply from a recipient using clean 2-call jitter pattern.
         
         Flow:
         1. Pause all remaining messages for this recipient
-        2. Send immediate reply (30-120 seconds)
-        3. Reschedule remaining messages with extended delays (2-5 minutes)
+        2. CALL 1: schedule_message() - Send immediate reply (jitter handles timing)
+        3. CALL 2: schedule_message_queue() - Reschedule remaining messages (jitter handles batch)
+        4. Loop support: If another reply comes, this function is called again
         """
         recipient = reply_data.get("recipient")
         reply_content = reply_data.get("reply_content", "")
@@ -105,17 +114,13 @@ class ReplyHandler:
                     break
         
         # If not found by ID, assume it's for the last sent message
-        # In production, this would be tracked via message delivery callbacks
         if message_index < 0 and scheduled_messages:
-            # Assume reply is for the most recently sent message
-            # In real scenario, we'd track which messages were actually sent
             message_index = len(scheduled_messages) - 1
         
         if message_index >= 0:
             self.recipient_engagement[recipient]["last_message_index"] = message_index
         
-        # Step 1: Pause remaining messages for this recipient
-        # Pause all messages after the one that received the reply
+        # STEP 1: Pause remaining messages for this recipient
         remaining_messages = scheduled_messages[message_index + 1:] if message_index >= 0 else scheduled_messages
         
         if remaining_messages:
@@ -142,27 +147,30 @@ class ReplyHandler:
                 }
             ))
         
-        # Step 2: Generate and send immediate reply (30-120 seconds)
+        # STEP 2: Generate immediate reply
         immediate_reply = self.generate_immediate_reply(reply_content, recipient)
         immediate_scheduled_time = None
         
         if immediate_reply:
-            # Schedule immediate reply with short delay (30-120 seconds)
-            reply_delay = random.uniform(30.0, 120.0)  # Human-like response time
-            immediate_scheduled_time = reply_time + timedelta(seconds=reply_delay)
-            
+            # Create reply message object
             reply_message = Message(
                 content=immediate_reply,
                 recipient=recipient,
                 is_correction=True  # Mark as follow-up/correction
             )
             
-            scheduled_reply = ScheduledMessage(
+            # ===== CALL 1: Use jitter.schedule_message() =====
+            # This handles:
+            # - Complexity calculation
+            # - Typing time (with thinking pauses)
+            # - Delay calculation (jitter respects is_correction=True)
+            # - Pattern avoidance
+            # All in ONE clean call!
+            scheduled_reply = self.jitter_algorithm.schedule_message(
                 message=reply_message,
-                scheduled_time=immediate_scheduled_time,
-                typing_duration=random.uniform(5.0, 15.0),  # Quick reply typing time
-                explanation=f"Immediate reply to recipient response (scheduled {reply_delay:.1f}s after reply received)"
+                current_time=reply_time
             )
+            immediate_scheduled_time = scheduled_reply.scheduled_time
             
             # Add to scheduled queue
             if recipient not in self.scheduled_messages_by_recipient:
@@ -185,91 +193,47 @@ class ReplyHandler:
                 }
             ))
         
-        # Step 3: Reschedule remaining messages with extended delays (2-5 minutes between messages)
+        # STEP 3: Reschedule remaining messages using jitter batch
         if remaining_messages:
-            self._reschedule_remaining_messages(recipient, immediate_scheduled_time if immediate_reply else reply_time)
-    
-    def _reschedule_remaining_messages(self, recipient: str, start_time: datetime):
-        """
-        Reschedule remaining paused messages using jitter algorithm.
-        Respects message complexity and correction flags.
-        Only slightly extends delays for engaged conversations (1.2-1.5x multiplier).
-        """
-        if recipient not in self.paused_messages or not self.paused_messages[recipient]:
-            return
-        
-        paused = self.paused_messages[recipient]
-        rescheduled: List[ScheduledMessage] = []
-        current_time = start_time
-        
-        logger.info(f"Rescheduling {len(paused)} remaining messages for {recipient}")
-        
-        for paused_msg in paused:
-            # Ensure message complexity is determined (needed for delay calculation)
-            if paused_msg.message.complexity is None:
-                paused_msg.message.complexity = self.jitter_algorithm.determine_message_complexity(
-                    paused_msg.message
-                )
+            start_time = immediate_scheduled_time if immediate_reply else reply_time
             
-            # Use jitter algorithm's delay calculation (respects complexity, corrections, etc.)
-            base_delay = self.jitter_algorithm.calculate_inter_message_delay(
-                previous_time=current_time,
-                current_time=current_time,
-                message=paused_msg.message
+            # Extract Message objects from ScheduledMessage objects
+            # (remaining_messages are ScheduledMessage objects, but jitter expects Message objects)
+            messages_to_reschedule = [sm.message for sm in remaining_messages]
+            
+            # ===== CALL 2: Use jitter.schedule_message_queue() =====
+            # This handles:
+            # - Complexity for each message
+            # - Typing time for each message (with thinking pauses)
+            # - Inter-message delays (with exponential randomness)
+            # - Pattern avoidance across all messages
+            # - Time window constraints
+            # All in ONE clean batch call!
+            rescheduled = self.jitter_algorithm.schedule_message_queue(
+                messages=messages_to_reschedule,
+                start_time=start_time,
+                enforce_time_window=False  # No time window constraint for rescheduled
             )
             
-            # Slightly extend delay for engaged conversations (1.2-1.5x multiplier)
-            # This accounts for active conversation pacing without being too rigid
-            engagement_multiplier = random.uniform(1.2, 1.5)
-            adjusted_delay = base_delay * engagement_multiplier
+            # Add rescheduled messages back to scheduled queue
+            if recipient not in self.scheduled_messages_by_recipient:
+                self.scheduled_messages_by_recipient[recipient] = []
+            self.scheduled_messages_by_recipient[recipient].extend(rescheduled)
             
-            # Calculate typing time (respects message complexity)
-            typing_duration, typing_explanation = self.jitter_algorithm.typing_model.calculate_typing_time(
-                paused_msg.message
-            )
+            # Clear paused messages
+            self.paused_messages[recipient] = []
             
-            # Calculate new scheduled time
-            new_scheduled_time = current_time + timedelta(seconds=adjusted_delay + typing_duration)
+            logger.info(f"Rescheduled {len(rescheduled)} messages for {recipient} starting at {start_time.strftime('%H:%M:%S')}")
             
-            # Create rescheduled message
-            rescheduled_msg = ScheduledMessage(
-                message=paused_msg.message,
-                scheduled_time=new_scheduled_time,
-                typing_duration=typing_duration,
-                explanation=(
-                    f"Rescheduled after reply. "
-                    f"Base delay: {base_delay/60:.1f} min (jitter algo), "
-                    f"Extended: {adjusted_delay/60:.1f} min (engaged conversation), "
-                    f"Typing: {typing_duration:.1f}s ({typing_explanation})"
-                )
-            )
-            
-            rescheduled.append(rescheduled_msg)
-            current_time = new_scheduled_time
-            
-            # Update pattern avoidance with this scheduled time
-            self.jitter_algorithm.pattern_avoidance.add_sent_time(new_scheduled_time)
-        
-        # Add rescheduled messages back to scheduled queue
-        if recipient not in self.scheduled_messages_by_recipient:
-            self.scheduled_messages_by_recipient[recipient] = []
-        self.scheduled_messages_by_recipient[recipient].extend(rescheduled)
-        
-        # Clear paused messages
-        self.paused_messages[recipient] = []
-        
-        logger.info(f"Rescheduled {len(rescheduled)} messages for {recipient}")
-        
-        # Publish reschedule event
-        self.event_bus.publish(Event(
-            event_id=str(uuid.uuid4()),
-            event_type=EventType.SCHEDULE_ADJUSTED,
-            timestamp=datetime.now(),
-            data={
-                "recipient": recipient,
-                "action": "rescheduled",
-                "rescheduled_count": len(rescheduled),
-                "reason": "reply_received_using_jitter_algo"
-            }
-        ))
-
+            # Publish reschedule event
+            self.event_bus.publish(Event(
+                event_id=str(uuid.uuid4()),
+                event_type=EventType.SCHEDULE_ADJUSTED,
+                timestamp=datetime.now(),
+                data={
+                    "recipient": recipient,
+                    "action": "rescheduled",
+                    "rescheduled_count": len(rescheduled),
+                    "reason": "reply_received_using_clean_jitter_calls"
+                }
+            ))

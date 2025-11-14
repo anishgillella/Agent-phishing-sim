@@ -73,15 +73,16 @@ def get_logger(name: str) -> logging.Logger:
     
     # Only configure if not already configured
     if not logger.handlers:
-        logger.setLevel(logging.DEBUG)
+        # Suppress verbose logs - only show INFO and above
+        logger.setLevel(logging.INFO)
         
-        # Console handler (pretty format)
+        # Console handler (pretty format) - only INFO and above
         console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
+        console_handler.setLevel(logging.INFO)
         console_handler.setFormatter(ConsoleFormatter())
         logger.addHandler(console_handler)
         
-        # File handler (JSON format for structured analysis)
+        # File handler (JSON format for structured analysis) - DEBUG level for file
         file_handler = logging.FileHandler(
             LOGS_DIR / f"agent_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         )
