@@ -2,9 +2,11 @@
 Jitter Algorithm
 
 Main algorithm that schedules messages with human-realistic timing.
+Fires events at different points during execution for agent orchestration.
 """
 
 import random
+import uuid
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 
@@ -19,10 +21,17 @@ class JitterAlgorithm:
     Main jitter algorithm that schedules messages with human-realistic timing.
     """
     
-    def __init__(self):
+    def __init__(self, event_bus=None):
+        """
+        Initialize jitter algorithm.
+        
+        Args:
+            event_bus: Optional EventBus instance to publish events during algorithm execution
+        """
         self.pattern_avoidance = PatternAvoidance()
         self.time_model = TimePatternModel()
         self.typing_model = HumanTypingModel()
+        self.event_bus = event_bus
     
     def determine_message_complexity(self, message: Message) -> MessageComplexity:
         """Determine message complexity from content."""
@@ -92,8 +101,43 @@ class JitterAlgorithm:
         # Determine complexity
         message.complexity = self.determine_message_complexity(message)
         
+        # Fire event: complexity determined (agent can react)
+        if self.event_bus:
+            try:
+                from agent.models import Event, EventType
+                self.event_bus.publish(Event(
+                    event_id=str(uuid.uuid4()),
+                    event_type=EventType.MESSAGE_QUEUED,
+                    timestamp=current_time,
+                    data={
+                        "message_content": message.content[:50],
+                        "recipient": message.recipient,
+                        "complexity": message.complexity.value
+                    }
+                ))
+            except ImportError:
+                pass  # Event bus not available
+        
         # Calculate typing time
-        typing_duration, typing_explanation = self.typing_model.calculate_typing_time(message)
+        typing_duration, typing_explanation, typing_metrics = self.typing_model.calculate_typing_time(message)
+        
+        # Fire event: typing started (agent can monitor typing duration)
+        if self.event_bus:
+            try:
+                from agent.models import Event, EventType
+                self.event_bus.publish(Event(
+                    event_id=str(uuid.uuid4()),
+                    event_type=EventType.TYPING_STARTED,
+                    timestamp=current_time,
+                    data={
+                        "message_content": message.content[:50],
+                        "recipient": message.recipient,
+                        "typing_duration": typing_duration,
+                        "typing_explanation": typing_explanation
+                    }
+                ))
+            except ImportError:
+                pass
         
         # Calculate when to start typing (and thus when to send)
         if previous_scheduled_time:
@@ -140,31 +184,108 @@ class JitterAlgorithm:
         # Verify no pattern violations
         max_attempts = 10
         attempt = 0
+        pattern_violation_detected = False
         while not self.pattern_avoidance.check_pattern_violation(scheduled_send_time) and attempt < max_attempts:
+            pattern_violation_detected = True
+            # Fire event: pattern detected (agent can react and adjust)
+            if self.event_bus:
+                try:
+                    from agent.models import Event, EventType
+                    self.event_bus.publish(Event(
+                        event_id=str(uuid.uuid4()),
+                        event_type=EventType.PATTERN_DETECTED,
+                        timestamp=current_time,
+                        data={
+                            "pattern_type": "timing_violation",
+                            "scheduled_time": scheduled_send_time.isoformat(),
+                            "attempt": attempt + 1,
+                            "description": f"Pattern violation detected at attempt {attempt + 1}, adjusting schedule"
+                        }
+                    ))
+                except ImportError:
+                    pass
+            
             # Add small random adjustment
             adjustment = random.uniform(30.0, 120.0)
             scheduled_send_time += timedelta(seconds=adjustment)
             attempt += 1
         
-        # Build explanation
+        # Build comprehensive explanation with ALL jitter factors
+        word_count = self.typing_model.estimate_word_count(message.content)
+        complexity = message.complexity.value if message.complexity else "unknown"
+        
+        # Extract WPM from typing explanation
+        import re
+        wpm_match = re.search(r'~(\d+) WPM', typing_explanation)
+        wpm = int(wpm_match.group(1)) if wpm_match else None
+        
+        # Calculate inter-message delay details
         if previous_scheduled_time:
             interval = (scheduled_send_time - previous_scheduled_time).total_seconds()
+            # Recalculate base delay to show what was used (approximation for explanation)
+            base_delay_approx = self.calculate_inter_message_delay(
+                previous_scheduled_time, 
+                current_time, 
+                message
+            )
+            # Check time clustering for display
+            cluster_factor = self.time_model.get_time_cluster_factor(scheduled_send_time)
+            is_clustered = self.time_model.should_cluster_around_time(scheduled_send_time)
+            
             explanation = (
-                f"{typing_explanation}. "
-                f"Inter-message interval: {interval/60:.1f} minutes "
-                f"(accounts for human pacing and time-of-day patterns)."
+                f"Complexity: {complexity.upper()} ({word_count} words). "
+                f"Typing: {typing_explanation}"
+            )
+            if wpm:
+                explanation += f" (WPM range: {self.typing_model.WPM_RANGES[message.complexity][0]}-{self.typing_model.WPM_RANGES[message.complexity][1]}, actual: ~{wpm})"
+            
+            explanation += (
+                f". Inter-message delay: {base_delay_approx/60:.2f} min base → {interval/60:.2f} min actual "
+                f"(adjusted for time clustering: {cluster_factor:.2f}x, clustered: {is_clustered}, "
+                f"pattern avoidance applied)."
             )
         else:
             explanation = (
-                f"{typing_explanation}. "
-                f"Initial message scheduled with realistic startup delay."
+                f"Complexity: {complexity.upper()} ({word_count} words). "
+                f"Typing: {typing_explanation}"
             )
+            if wpm:
+                explanation += f" (WPM range: {self.typing_model.WPM_RANGES[message.complexity][0]}-{self.typing_model.WPM_RANGES[message.complexity][1]}, actual: ~{wpm})"
+            
+            explanation += ". Initial message scheduled with realistic startup delay."
+        
+        # Add pattern violation info if detected
+        if pattern_violation_detected:
+            explanation += f" Pattern violation detected and adjusted ({attempt} attempts)."
+        
+        # Compile all jitter details for logging
+        jitter_details = {
+            "complexity": message.complexity.value if message.complexity else "unknown",
+            "typing_metrics": typing_metrics,
+            "inter_message_delay": {
+                "base_delay_minutes": base_delay_approx / 60 if previous_scheduled_time else None,
+                "actual_delay_minutes": interval / 60 if previous_scheduled_time else None,
+                "cluster_factor": cluster_factor if previous_scheduled_time else None,
+                "is_clustered": is_clustered if previous_scheduled_time else False,
+            },
+            "pattern_avoidance": {
+                "applied": True,
+                "violation_detected": pattern_violation_detected,
+                "adjustment_attempts": attempt if pattern_violation_detected else 0,
+            },
+            "time_constraints": {
+                "start_time": (previous_scheduled_time or current_time).isoformat(),
+                "end_time": end_time.isoformat() if end_time else None,
+                "fits_in_window": scheduled_send_time <= end_time if end_time else True,
+            }
+        }
         
         return ScheduledMessage(
             message=message,
             scheduled_time=scheduled_send_time,
             typing_duration=typing_duration,
-            explanation=explanation
+            explanation=explanation,
+            jitter_details=jitter_details
         )
     
     def schedule_message_queue(self,
@@ -260,13 +381,13 @@ class JitterAlgorithm:
                 target_interval=target_interval if distribution_mode == "even" else None
             )
             
-            # Check density limits
+            # Check density limits (batch-specific, not handled in schedule_message)
             if max_messages_per_hour:
                 message_hour = scheduled.scheduled_time.hour
                 messages_this_hour = messages_by_hour.get(message_hour, 0)
                 
                 if messages_this_hour >= max_messages_per_hour:
-                    # Adjust to next hour or reduce delay
+                    # Adjust to next hour
                     if previous_time:
                         # Move to start of next hour
                         next_hour_start = scheduled.scheduled_time.replace(
@@ -280,33 +401,7 @@ class JitterAlgorithm:
                                 explanation=f"{scheduled.explanation} (adjusted for density limit)"
                             )
                 
-                messages_by_hour[message_hour] = messages_by_hour.get(message_hour, 0) + 1
-            
-            # Validate time window constraint
-            if enforce_time_window and end_time:
-                if scheduled.scheduled_time > end_time:
-                    # Adjust to fit within window
-                    # Use remaining time divided by remaining messages
-                    remaining_messages = len(messages) - i - 1
-                    if remaining_messages > 0:
-                        # Back-calculate: fit remaining messages before end_time
-                        adjusted_time = end_time - timedelta(
-                            seconds=(remaining_messages * (max_delay or 60.0))
-                        )
-                        scheduled = ScheduledMessage(
-                            message=scheduled.message,
-                            scheduled_time=max(adjusted_time, previous_time + timedelta(seconds=30)) if previous_time else adjusted_time,
-                            typing_duration=scheduled.typing_duration,
-                            explanation=f"{scheduled.explanation} (adjusted to fit time window)"
-                        )
-                    else:
-                        # Last message: schedule at end_time
-                        scheduled = ScheduledMessage(
-                            message=scheduled.message,
-                            scheduled_time=end_time,
-                            typing_duration=scheduled.typing_duration,
-                            explanation=f"{scheduled.explanation} (scheduled at window end)"
-                        )
+                messages_by_hour[scheduled.scheduled_time.hour] = messages_by_hour.get(scheduled.scheduled_time.hour, 0) + 1
             
             scheduled_messages.append(scheduled)
             previous_time = scheduled.scheduled_time

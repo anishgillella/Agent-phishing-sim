@@ -8,7 +8,7 @@ import random
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, List, Dict
 
 
 # ========== ENUMS ==========
@@ -40,6 +40,7 @@ class ScheduledMessage:
     scheduled_time: datetime
     typing_duration: float  # seconds
     explanation: str
+    jitter_details: Optional[Dict] = None  # Detailed jitter factors applied
 
 
 # ========== BEHAVIORAL CLASSES ==========
@@ -74,12 +75,12 @@ class HumanTypingModel:
         return len(text.split())
     
     @staticmethod
-    def calculate_typing_time(message: Message) -> Tuple[float, str]:
+    def calculate_typing_time(message: Message) -> Tuple[float, str, Dict]:
         """
         Calculate realistic typing time for a message.
         
         Returns:
-            Tuple of (typing_duration_seconds, explanation)
+            Tuple of (typing_duration_seconds, explanation, detailed_metrics)
         """
         word_count = HumanTypingModel.estimate_word_count(message.content)
         
@@ -93,17 +94,34 @@ class HumanTypingModel:
         words_per_second = wpm / 60.0
         base_typing_time = word_count / words_per_second
         
-        # Add thinking pauses (humans pause while composing)
+        # Add thinking pauses (humans pause while composing - NOT at end, but MID-MESSAGE)
         thinking_pause = 0.0
         pause_explanation = ""
+        has_thinking_pause = False
+        pause_position_ratio = 0.5  # Default: middle (0.0-1.0, where 0=start, 1=end)
+        
         if random.random() < HumanTypingModel.THINKING_PAUSE_PROBABILITY:
+            # YES, this message gets a pause
             thinking_pause = random.uniform(
                 HumanTypingModel.THINKING_PAUSE_MIN,
                 HumanTypingModel.THINKING_PAUSE_MAX
             )
-            pause_explanation = f" (includes {thinking_pause:.1f}s thinking pause)"
+            
+            # RANDOMIZE PAUSE POSITION (not always at 50%)
+            # Position varies: 20% (early), 50% (middle), 80% (late), etc.
+            pause_position_ratio = random.uniform(0.25, 0.75)  # Pause between 25%-75% of typing
+            
+            pause_explanation = (
+                f" (includes {thinking_pause:.1f}s thinking pause at {pause_position_ratio*100:.0f}% of composition)"
+            )
+            has_thinking_pause = True
         
-        total_time = base_typing_time + thinking_pause
+        # Calculate typing split around pause
+        typing_before_pause = base_typing_time * pause_position_ratio
+        typing_after_pause = base_typing_time * (1 - pause_position_ratio)
+        
+        # Total time still includes all typing + pause
+        total_time = typing_before_pause + thinking_pause + typing_after_pause
         
         # Ensure minimum time (humans don't type instantly)
         min_time = 5.0 if not message.is_correction else 2.0
@@ -114,7 +132,21 @@ class HumanTypingModel:
             f"({base_typing_time:.1f}s base{pause_explanation})"
         )
         
-        return total_time, explanation
+        # Return detailed metrics for logging
+        detailed_metrics = {
+            "word_count": word_count,
+            "wpm_range": (wpm_min, wpm_max),
+            "actual_wpm": wpm,
+            "base_typing_time": base_typing_time,
+            "has_thinking_pause": has_thinking_pause,
+            "thinking_pause_duration": thinking_pause if has_thinking_pause else 0.0,
+            "pause_position_ratio": pause_position_ratio if has_thinking_pause else None,
+            "typing_before_pause": typing_before_pause if has_thinking_pause else 0.0,
+            "typing_after_pause": typing_after_pause if has_thinking_pause else 0.0,
+            "total_typing_time": total_time
+        }
+        
+        return total_time, explanation, detailed_metrics
 
 
 class TimePatternModel:

@@ -82,7 +82,7 @@ class TelemetryCollector:
                 self.logfire_configured = True
                 logger.info("Logfire configured for Pydantic model validation")
             except Exception as e:
-                logger.warning(f"Could not initialize Logfire: {e}. Pydantic validation will continue without Logfire.")
+                logger.warning(f"Could not initialize Logfire: {e}. Telemetry will continue with local storage only.")
         else:
             # Try to configure from environment variable
             try:
@@ -128,12 +128,24 @@ class TelemetryCollector:
         self.traces.append(trace_data)
         
         # Send to Logfire if available (for detailed tracing)
+        # Only log important traces, not every event (to reduce console noise)
+        trace_name = trace_data.get("name", "trace")
+        important_traces = ["agent_tool_calls", "agent_error", "agent_process_request"]
+        
         if self.logfire_configured:
             try:
-                logfire.info(
-                    trace_data.get("name", "trace"),
-                    **trace_data
-                )
+                # Only log important traces to reduce console verbosity
+                if trace_name in important_traces:
+                    logfire.info(
+                        trace_name,
+                        **trace_data
+                    )
+                # For other traces, use debug level (won't show in console)
+                else:
+                    logfire.debug(
+                        trace_name,
+                        **trace_data
+                    )
             except Exception as e:
                 logger.warning(f"Could not send trace to Logfire: {e}")
     
