@@ -189,14 +189,6 @@ LangChain Agent
    - Why: Requires carrier relationships and regulatory compliance
    - Implementation: MockSMSSender for simulation environment
 
-**Decision Framework:**
-```
-Decision Matrix:
-               Cost       Complexity   Control      Speed
-LLM (Buy)      Low        N/A          Low          High
-Jitter (Build) N/A        High         High         N/A
-Agent (Build)  N/A        High         High         N/A
-```
 
 **Criteria Used:**
 - Core IP → Build (jitter, agent logic)
@@ -204,41 +196,4 @@ Agent (Build)  N/A        High         High         N/A
 - Cost-benefit → Calculate hourly maintenance vs subscription
 - Time-to-market → Buy wins for non-differentiators
 
----
-
-## Summary
-
-| Component | Status | Lines | Type |
-|-----------|--------|-------|------|
-| Jitter Algorithm | COMPLETE | 414 | Build |
-| AI Agent | COMPLETE | 1,173 | Build |
-| Tools | COMPLETE | 462 | Build |
-| Telemetry | COMPLETE | 212 | Build |
-| Token Tracking | COMPLETE | 323 | Build |
-| Event Bus | COMPLETE | 89 | Build |
-| Reply Handler | COMPLETE | 240 | Build |
-| **Total** | **READY** | **~3,700** | **Production-Ready** |
-
----
-
-## Key Achievements
-
-1. 50 messages scheduled across 12 recipients in 6-hour window
-2. Human-realistic timing with 5 jitter factors
-3. Event-driven agent with 7 event types
-4. Production telemetry (LangSmith + Logfire + local metrics)
-5. Reply handling with automatic rescheduling loops
-6. Pattern avoidance prevents detection (< 5% violation rate)
-7. No hardcoded secrets (all environment variables)
-8. Full documentation (ARCHITECTURE.md, README.md)
-
----
-
-## Deployment Ready
-
-- No legacy code (removed jitter_algo.py)
-- All bugs fixed (reply handler, schedule_batch, message truncation)
-- Production-grade error handling
-- Clean git history with comprehensive commit message
-- Pushed to GitHub (`agent` branch)
 
