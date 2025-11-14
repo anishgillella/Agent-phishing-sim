@@ -309,7 +309,7 @@ Recipients: {recipients}
 
 CRITICAL ANTI-DETECTION STRATEGY:
 - 12 DIFFERENT PHONE NUMBERS (avoid concentrating on 3 recipients - that flags as smishing source)
-- MAXIMUM 5 messages PER RECIPIENT - HARD LIMIT (agent decides 3-5 per recipient - some get 3, some get 5-6)
+- MAXIMUM 5 messages PER RECIPIENT - HARD LIMIT (distribute 4-5 per recipient to total EXACTLY 50)
 - Varied timing per recipient (no synchronized patterns across numbers)
 - Different content per recipient (not mass-sent template copies)
 - VALIDATE: No recipient should exceed 5 messages
@@ -319,7 +319,7 @@ CRITICAL REQUIREMENTS:
 2. ONE COHERENT CAMPAIGN THREAD per recipient (not 5 different angles to same person)
 3. Messages must create natural flow: Alert → Urgency → Verification → Deadline → Follow-up
 4. Complexity: 20% SIMPLE (10 messages), 60% MEDIUM (30 messages), 20% COMPLEX (10 messages)
-5. MUST generate and schedule EXACTLY 50 messages total (distributed variably: 3-5 per recipient as agent decides)
+5. MUST generate and schedule EXACTLY 50 messages total (distribute 4-5 per recipient to total 50)
 6. Include realistic links (bit.ly/verify, verify-account-now.com) and timestamps
 7. Psychological tactics: scarcity (24-hour window), urgency (act NOW), authority (security team), fear (account lock)
 8. CRITICAL: Ensure sender NOT flagged as smishing - vary content, timing, and avoid mass patterns
@@ -338,9 +338,9 @@ YOUR TASK:
 TIME WINDOW STRATEGY (6-hour workday 9 AM - 3 PM):
 
 Mathematical Analysis:
-- Total: 50 messages across 6 hours and 12 recipients
-- Per recipient: 3-6 messages (agent decides - varies to avoid pattern)
-- Average: ~4.5 messages/recipient, ~8.3 messages/hour total
+- Total: EXACTLY 50 messages across 6 hours and 12 recipients
+- Per recipient: 4-5 messages (distribute to total EXACTLY 50)
+- Average: ~4.17 messages/recipient, ~8.3 messages/hour total
 - KEY: Distribute across recipients to avoid sender fingerprinting
 
 Anti-Detection Strategy (Why spreading across 11 numbers is critical):
@@ -349,10 +349,10 @@ Anti-Detection Strategy (Why spreading across 11 numbers is critical):
    - Monitoring tools can't correlate messages to one attacker
    - Each recipient sees independent campaign (not mass-broadcast)
 
-2. MESSAGE DISTRIBUTION (3-5 per recipient, agent decides):
+2. MESSAGE DISTRIBUTION (4-5 per recipient to total 50):
    - Recipient A: 5 messages spread 10:00-14:30 (morning + afternoon)
-   - Recipient B: 3 messages spread 09:15-13:45 (shorter campaign)
-   - Recipient C: 6 messages spread 09:30-14:50 (longer campaign)
+   - Recipient B: 4 messages spread 09:15-13:45 (shorter campaign)
+   - Recipient C: 5 messages spread 09:30-14:50 (longer campaign)
    - Each recipient gets DIFFERENT timing profile (not synchronized)
 
 3. TIMING VARIATION PER RECIPIENT (Prevents clustering detection):
@@ -399,7 +399,7 @@ YOUR EXPLANATION MUST INCLUDE:
 
 FINAL VALIDATION:
 - Total messages scheduled: MUST be 50 (not 28, not 40, EXACTLY 50)
-- Per-recipient MAX: NO recipient should have more than 6 messages (HARD LIMIT - VALIDATE THIS!)
+- Per-recipient MAX: NO recipient should have more than 5 messages (4-5 per recipient)
 - Distribution: Morning cluster + midday valley + afternoon cluster
 - Per recipient: One coherent thread, not random messages
 - Complexity: ~10 simple, ~30 medium, ~10 complex
